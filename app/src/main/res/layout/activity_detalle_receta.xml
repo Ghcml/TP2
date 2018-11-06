@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetalleReceta"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_detalle_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TITULO"/>
+
+    <ImageView
+        android:id="@+id/imageView_detalle_perfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_kitchen_black_24dp"/>
+
+    <TextView
+        android:id="@+id/textView_detalle_ingredientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INGREDIENTES"/>
+
+
+</LinearLayout>
