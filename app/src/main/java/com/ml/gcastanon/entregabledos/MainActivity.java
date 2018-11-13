@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity implements RecetasFragment.L
         setContentView(R.layout.activity_main);
 
 
-        FragmentManager supportFragment = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = supportFragment.beginTransaction();
+
         navigationView = findViewById(R.id.navigationView_main);
         drawerLayout = findViewById(R.id.drawerLayout_main);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -36,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements RecetasFragment.L
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.itemAbout:
-                        fragmentTransaction.addToBackStack(null);
-
+                        FragmentManager supportFragment = getSupportFragmentManager();
+                         FragmentTransaction fragmentTransaction = supportFragment.beginTransaction();
                         fragmentTransaction.replace(R.id.contenedor,new AboutFragment()).commit();
                         break;
                     case R.id.itemRecetas:
-                        fragmentTransaction.addToBackStack(null);
-
-                        fragmentTransaction.replace(R.id.contenedor,new RecetasFragment()).commit();
+                        FragmentManager supportFragmentDos = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransactionDos = supportFragmentDos.beginTransaction();
+                        fragmentTransactionDos.replace(R.id.contenedor,new RecetasFragment()).commit();
                         break;
 
                         default:

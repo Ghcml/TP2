@@ -27,7 +27,7 @@ public class AboutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
         ImageView imageView = view.findViewById(R.id.imageView_fragment_about_foto);
-        imageView.setImageResource(R.drawable.fondoguillermo);
+        imageView.setImageResource(R.drawable.fondoguillermoo);
         return view;
     }
 
