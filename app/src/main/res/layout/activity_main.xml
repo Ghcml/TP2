@@ -6,19 +6,13 @@
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout_main"
     tools:context=".MainActivity">
-
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:id="@+id/contenedor">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:text="Hola"
-            android:textAlignment="center"/>
+
 
     </FrameLayout>
 

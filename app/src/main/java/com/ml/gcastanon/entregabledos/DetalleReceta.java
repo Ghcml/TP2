@@ -1,33 +1,45 @@
 package com.ml.gcastanon.entregabledos;
 
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DetalleReceta extends AppCompatActivity {
     public static  final String KEY_RECETA = "object_receta";
-    private ImageView imageViewPerfil;
-    private TextView textViewTitulo,textViewIngredientes;
+    private List<DetalleFragment> listaDetallesFragment;
+    private  int indice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_receta);
+           listaDetallesFragment = new ArrayList<>();
 
-        imageViewPerfil = findViewById(R.id.imageView_detalle_perfil);
-        textViewTitulo = findViewById(R.id.textView_detalle_titulo);
-        textViewIngredientes = findViewById(R.id.textView_detalle_ingredientes);
-        //OBTENEMOS EL INTENT QUE LE MANDAMOS DESDE EL MAIN
-        Intent intent = getIntent();
-        //PEDIMOS LA BURBUJA QUE VIENE CON EL OBJETO (RECETAS) DESDE EL MAIN
-        Bundle bundle = intent.getExtras();
+        Bundle bundle = getIntent().getExtras();
+          Receta receta = (Receta) bundle.get(KEY_RECETA);
 
-        Receta receta = (Receta) bundle.getSerializable(KEY_RECETA);
+           List<Receta> listaRecetas = RecetasProvider.cargarRecetas();
 
-        imageViewPerfil.setImageResource(receta.getImagen());
-        textViewIngredientes.setText(receta.getDescripcion());
-        textViewTitulo.setText(receta.getNombre());
+           for (int i = 0; i<listaRecetas.size();i++){
+               DetalleFragment detalleFragment = DetalleFragment.getFragment(listaRecetas.get(i));
+               listaDetallesFragment.add(detalleFragment);
+                   if(listaRecetas.get(i).getNombre().equalsIgnoreCase(receta.getNombre())){
+                       indice = i;
+                   }
+           }
+
+           final ViewPager viewPager = findViewById(R.id.viewPager);
+           final FragmentStateAdapter fragmentStateAdapter = new FragmentStateAdapter(getSupportFragmentManager(),listaDetallesFragment);
+
+           viewPager.setAdapter(fragmentStateAdapter);
+
+           viewPager.setCurrentItem(indice);
+
 
     }
 }

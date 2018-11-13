@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class RecetasFragment extends Fragment implements RecetaAdapter.ListenerRecetasAdapter {
     private RecyclerView recyclerViewRecetas;
     private ListenerRecyclerViewFragments listenerRecyclerViewFragments;
+    private SearchView searchView;
     public RecetasFragment() {
         // Required empty public constructor
     }
@@ -30,6 +32,7 @@ public class RecetasFragment extends Fragment implements RecetaAdapter.ListenerR
         this.listenerRecyclerViewFragments = (ListenerRecyclerViewFragments) context;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class RecetasFragment extends Fragment implements RecetaAdapter.ListenerR
         View view = inflater.inflate(R.layout.fragment_recetas_fragment, container, false);
         recyclerViewRecetas = view.findViewById(R.id.recyclerView_recetas);
         List<Receta> recetas = RecetasProvider.cargarRecetas();
-        RecetaAdapter recetaAdapter = new RecetaAdapter(recetas,this);
+        final RecetaAdapter recetaAdapter = new RecetaAdapter(recetas,this);
 
         //CREAMOS LAYOUT MANAGER
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -45,6 +48,23 @@ public class RecetasFragment extends Fragment implements RecetaAdapter.ListenerR
         recyclerViewRecetas.setAdapter(recetaAdapter);
         recyclerViewRecetas.setLayoutManager(linearLayoutManager);
         recyclerViewRecetas.setHasFixedSize(true);
+
+        searchView = view.findViewById(R.id.searchView1);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                recetaAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+
+
         return view;
     }
 

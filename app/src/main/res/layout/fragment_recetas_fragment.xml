@@ -5,10 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".RecetasFragment">
 
-   <android.support.v7.widget.RecyclerView
+
+
+   <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:id="@+id/recyclerView_recetas">
-   </android.support.v7.widget.RecyclerView>
+       android:orientation="vertical">
+      <SearchView
+          android:id="@+id/searchView1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:queryHint="Buscar.." >
+
+      </SearchView>
+
+
+      <android.support.v7.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/recyclerView_recetas">
+      </android.support.v7.widget.RecyclerView>
+   </LinearLayout>
+
+
 
 </FrameLayout>

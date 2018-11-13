@@ -10,19 +10,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.Serializable;
 
-public class MainActivity extends AppCompatActivity implements RecetasFragment.ListenerRecyclerViewFragments {
+public class MainActivity extends AppCompatActivity implements RecetasFragment.ListenerRecyclerViewFragments
+{
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        FragmentManager supportFragment = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = supportFragment.beginTransaction();
         navigationView = findViewById(R.id.navigationView_main);
         drawerLayout = findViewById(R.id.drawerLayout_main);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -30,15 +36,14 @@ public class MainActivity extends AppCompatActivity implements RecetasFragment.L
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.itemAbout:
-                        Toast.makeText(getApplicationContext(),"Tocaste About",Toast.LENGTH_SHORT).show();
+                        fragmentTransaction.addToBackStack(null);
+
+                        fragmentTransaction.replace(R.id.contenedor,new AboutFragment()).commit();
                         break;
                     case R.id.itemRecetas:
-                        // TODO creo un fragment manager y llamo al fragment RecetasFragments
-                        FragmentManager supportFragment = getSupportFragmentManager(); //TODO  creo y llamo al support fragment manager
-                        FragmentTransaction fragmentTransaction = supportFragment.beginTransaction();
+                        fragmentTransaction.addToBackStack(null);
+
                         fragmentTransaction.replace(R.id.contenedor,new RecetasFragment()).commit();
-
-
                         break;
 
                         default:
@@ -49,16 +54,17 @@ public class MainActivity extends AppCompatActivity implements RecetasFragment.L
 
             }
         });
+
+
+
+
     }
 
     @Override
     public void informarSeleccionado(Receta receta) {
         Intent intent = new Intent(this,DetalleReceta.class);
-
         Bundle bundle = new Bundle();
-
         bundle.putSerializable(DetalleReceta.KEY_RECETA,receta);
-
         intent.putExtras(bundle);
         startActivity(intent);
 

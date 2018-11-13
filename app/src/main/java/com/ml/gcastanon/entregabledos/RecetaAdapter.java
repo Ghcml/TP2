@@ -6,19 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecetaAdapter extends RecyclerView.Adapter {
+public class RecetaAdapter extends RecyclerView.Adapter implements Filterable {
 
     private List<Receta> listRecetas;
+    private List<Receta> filterListRecetas;
     private  ListenerRecetasAdapter listenerRecetasAdapter;
+    private CustomFilter filter;
 
     public RecetaAdapter(List<Receta> listRecetas,ListenerRecetasAdapter listenerRecetasAdapter){
         this.listRecetas = listRecetas;
         this.listenerRecetasAdapter = listenerRecetasAdapter;
+        this.filterListRecetas = listRecetas;
     }
 
     @NonNull
@@ -45,6 +51,14 @@ public class RecetaAdapter extends RecyclerView.Adapter {
         return listRecetas.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        if(filter ==  null)
+        {
+            filter = new CustomFilter();
+        }
+        return filter;
+    }
 
 
     private class ViewHolderReceta extends  RecyclerView.ViewHolder {
@@ -71,7 +85,7 @@ public class RecetaAdapter extends RecyclerView.Adapter {
             textViewTitulo.setText(receta.getNombre());
             textViewDescripcion.setText(receta.getDescripcion());
             if (receta.getImagen() == null){
-                imageViewPerfil.setImageResource(R.drawable.ic_kitchen_black_24dp);
+
             }else
                 {
                     imageViewPerfil.setImageResource(receta.getImagen());
@@ -82,5 +96,40 @@ public class RecetaAdapter extends RecyclerView.Adapter {
     }
     public interface ListenerRecetasAdapter{
         public void informarSeleccionado(Receta receta);
+    }
+
+    class CustomFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults results = new FilterResults();
+
+            if(charSequence != null && charSequence.length()>0){
+                charSequence = charSequence.toString().toUpperCase();
+                List<Receta> filter = new ArrayList<>();
+
+                for(int i = 0; i<filterListRecetas.size();i++) {
+                    if (filterListRecetas.get(i).getNombre().toUpperCase().contains(charSequence)){
+                        Receta  receta = new Receta(filterListRecetas.get(i).getNombre(),filterListRecetas.get(i).getDescripcion(),filterListRecetas.get(i).getImagen());
+                        filter.add(receta);
+                    }
+                }
+
+                results.count=filter.size();
+                results.values=filter;
+            }else{
+                results.count=filterListRecetas.size();
+                results.values=filterListRecetas;
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            listRecetas= (List<Receta>) filterResults.values;
+            notifyDataSetChanged();
+        }
     }
 }
